@@ -1,6 +1,6 @@
 const w : number = window.innerWidth
 const h : number = window.innerHeight
-const scGap : number = 0.02
+const scGap : number = 0.02 / 5
 const sizeFactor : number = 6.9
 const barHFactor :number = 3.2
 const colors : Array<String> = ["#4CAF50", "#3F51B5", "#9C27B0", "#f44336", "#0091EA"]
@@ -49,6 +49,7 @@ class DrawingUtil {
     }
 
     static drawRSBNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        console.log(scale)
         context.fillStyle = colors[i]
         context.save()
         context.translate(w / 2, h / 2)
@@ -155,7 +156,7 @@ class RSBNode {
     }
 
     draw(context : CanvasRenderingContext2D) {
-        DrawingUtil.drawRotatingSquareBar(context, this.i, this.state.scale)
+        DrawingUtil.drawRSBNode(context, this.i, this.state.scale)
     }
 
     update(cb : Function) {
@@ -215,6 +216,9 @@ class Renderer {
         this.rsb.startUpdating(() => {
             this.animator.start(() => {
                 cb()
+                this.rsb.update(() => {
+                    this.animator.stop()
+                })
             })
         })
     }
