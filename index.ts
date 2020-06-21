@@ -197,3 +197,21 @@ class RotatingSquareBar {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    rsb : RotatingSquareBar = new RotatingSquareBar()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.rsb.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.rsb.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+            })
+        })
+    }
+}
