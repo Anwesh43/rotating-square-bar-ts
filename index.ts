@@ -21,3 +21,38 @@ class ScaleUtil {
         return Math.sin(scale * Math.PI)
     }
 }
+
+class DrawingUtil {
+
+    static drawRotatingSquareBar(context : CanvasRenderingContext2D, i : number, sf : number) {
+        const barSize : number = Math.min(w, h) / sizeFactor
+        const barH : number = Math.min(w, h) / barHFactor
+
+        const sc2 : number = ScaleUtil.divideScale(sf, 1, 2)
+        const sc2i : number = ScaleUtil.divideScale(sc2, i, 4)
+        const hUpdated = barH * sc2i
+        context.save()
+        context.rotate(i * Math.PI / 2)
+        context.fillRect(-barSize / 2, -barSize / 2 - hUpdated, barSize, hUpdated)
+        context.restore()
+    }
+
+    static drawRotatingSquareBars(context : CanvasRenderingContext2D, scale : number) {
+        const size : number = Math.min(w, h) / sizeFactor
+        const sf : number = ScaleUtil.sinify(scale)
+        const sc1 : number = ScaleUtil.divideScale(sf, 0, 2)
+        const updatedSize : number = size * sc1
+        context.fillRect(-updatedSize / 2, -updatedSize / 2, updatedSize, updatedSize)
+        for (var i = 0; i < 4; i++) {
+            DrawingUtil.drawRotatingSquareBar(context, i, sf)
+        }
+    }
+
+    static drawRSBNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        context.fillStyle = colors[i]
+        context.save()
+        context.translate(w / 2, h / 2)
+        DrawingUtil.drawRotatingSquareBars(context, scale)
+        context.restore()
+    }
+}
